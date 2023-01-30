@@ -3,7 +3,7 @@ package sk.kapitan.NBAstats.data.models
 
 import com.google.gson.annotations.SerializedName
 
-data class DataX(
+data class TeamData(
     @SerializedName("abbreviation")
     val abbreviation: String,
     @SerializedName("city")

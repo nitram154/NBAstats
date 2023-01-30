@@ -19,7 +19,7 @@ class NBAAplication : Application() {
             androidContext(this@NBAAplication)
             module {
                 viewModel() {
-                    MainViewModel()
+                    MainViewModel(get())
                 }
                 single {
                     Retrofit.Builder()

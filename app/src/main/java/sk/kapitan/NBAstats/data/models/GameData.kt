@@ -3,7 +3,7 @@ package sk.kapitan.NBAstats.data.models
 
 import com.google.gson.annotations.SerializedName
 
-data class Data(
+data class GameData(
     @SerializedName("date")
     val date: String,
     @SerializedName("home_team")
