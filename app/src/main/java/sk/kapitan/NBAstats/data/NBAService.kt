@@ -13,5 +13,6 @@ interface NBAService {
 
     @Headers("Content-Type: application/json")
     @GET("api/v1/games")
-    suspend fun getGames( @Query("team_ids[]") teamID : Int): Response<Games>
+    suspend fun getGames( @Query("team_ids[]") teamID : Int, @Query("start_date") startDate : String, @Query("end_date") endDate : String): Response<Games>
+
 }

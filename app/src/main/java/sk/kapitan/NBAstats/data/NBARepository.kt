@@ -2,6 +2,8 @@ package sk.kapitan.NBAstats.data
 
 import sk.kapitan.NBAstats.data.models.GameData
 import sk.kapitan.NBAstats.data.models.TeamData
+import sk.kapitan.NBAstats.dateToString
+import java.util.Date
 
 class NBARepository(private val nbaService: NBAService) {
     private val teams = mutableListOf<TeamData>()
@@ -12,8 +14,12 @@ class NBARepository(private val nbaService: NBAService) {
         } ?: emptyList()
     }
 
-    suspend fun getGames(teamId: Int ): List<GameData>{
-        return nbaService.getGames(teamId).body()?.data ?: emptyList()
+    suspend fun getGames(teamId: Int, startDate : Date, endDate : Date): List<GameData>{
+
+        val startString = dateToString(startDate) ?: return emptyList()
+        val endString = dateToString(endDate) ?: return emptyList()
+
+        return nbaService.getGames(teamId,startString, endString).body()?.data ?: emptyList()
     }
 
     fun getTeamById(teamId: Int): TeamData {

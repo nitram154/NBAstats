@@ -16,6 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.core.util.Pair
+import com.google.android.material.datepicker.MaterialDatePicker
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import sk.kapitan.NBAstats.ui.theme.NBAstatsTheme
@@ -27,7 +29,7 @@ import java.util.*
 
 const val GAMES_KEY = "GAMES_KEY"
 
-class GamesActivity : ComponentActivity() {
+class GamesActivity : AppCompatActivity() {
 
     private val viewModel by viewModel<GamesViewModel>(parameters = {parametersOf(intent.getIntExtra(GAMES_KEY,1))})
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +50,10 @@ class GamesActivity : ComponentActivity() {
                                     Icon(painter = painterResource(id = R.drawable.ic_arrow_back), contentDescription = null)
                                 }
                                 Text(text = team.value?.name ?: "")
+                                Box(modifier = Modifier.weight(1f))
+                                IconButton(onClick = { showDatePicker() }) {
+                                    Icon(painter = painterResource(id = R.drawable.ic_filter_alt), contentDescription = null)
+                                }
                             }
                         }
                     ) {
@@ -71,19 +77,20 @@ class GamesActivity : ComponentActivity() {
             }
         }
     }
-    fun parseDate(
-        inputDateString: String?,
-        inputDateFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'", Locale.US),
-        outputDateFormat: SimpleDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.US)
-    ): String? {
-        var date: Date? = null
-        var outputDateString: String? = null
-        try {
-            date = inputDateFormat.parse(inputDateString)
-            outputDateString = outputDateFormat.format(date)
-        } catch (e: ParseException) {
-            e.printStackTrace()
+
+    private fun showDatePicker() {
+        val dateRangePicker =
+            MaterialDatePicker.Builder.dateRangePicker()
+                .setTitleText("Select dates")
+                .setSelection(
+                    Pair(viewModel.startDate.time, viewModel.endDate.time)
+                )
+                .build()
+        dateRangePicker.addOnPositiveButtonClickListener {
+            viewModel.onCalendarPick(it)
         }
-        return outputDateString
+        dateRangePicker.show(supportFragmentManager,"")
     }
+
+
 }
