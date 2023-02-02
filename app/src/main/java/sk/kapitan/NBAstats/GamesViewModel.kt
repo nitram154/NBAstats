@@ -11,9 +11,12 @@ import sk.kapitan.NBAstats.data.models.TeamData
 
 class GamesViewModel(private val teamId: Int, private val nbaRepository: NBARepository):ViewModel()  {
     val games = MutableLiveData<List<GameData>>()
+    val team = MutableLiveData<TeamData>()
     init {
         viewModelScope.launch {
-           games.value =  nbaRepository.getGames(teamId)
+            team.value = nbaRepository.getTeamById(teamId)
+            games.value =  nbaRepository.getGames(teamId)
+
         }
     }
 }

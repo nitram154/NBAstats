@@ -7,11 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import sk.kapitan.NBAstats.ui.theme.NBAstatsTheme
@@ -30,12 +29,19 @@ class GamesActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-//                    val teams = viewModel.teams.observeAsState()
-//                    LazyColumn(content = {
-//                        items(teams.value ?: emptyList()) {
-//                            Text(text = it.name)
-//                        }
-//                    })
+                    val team = viewModel.team.observeAsState()
+                    Scaffold(
+                        topBar = {
+                            TopAppBar { 
+                                IconButton(onClick = { /*TODO*/ }) {
+                                    Icon(painter = painterResource(id = R.drawable.ic_arrow_back), contentDescription = null)
+                                }
+                                Text(text = team.value?.name ?: "")
+                            }
+                        }
+                    ) {
+                        // Screen content
+                    }
                 }
             }
         }
