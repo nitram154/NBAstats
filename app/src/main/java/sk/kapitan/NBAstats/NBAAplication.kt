@@ -19,7 +19,7 @@ class NBAAplication : Application() {
         startKoin() {
             androidContext(this@NBAAplication)
             modules(listOf(module {
-                viewModel() {
+                viewModel {
                     MainViewModel(get())
                 }
                 single {
@@ -31,12 +31,10 @@ class NBAAplication : Application() {
                         .run { create(NBAService::class.java) }
                 }
                 single {
-                    NBARepository(get())
+                    NBARepository(androidContext(), get())
                 }
-                viewModel() { (teamId: Int) ->
-
+                viewModel { (teamId: Int) ->
                     GamesViewModel(teamId, get())
-
                 }
             }))
         }
