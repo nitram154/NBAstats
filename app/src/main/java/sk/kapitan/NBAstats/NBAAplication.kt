@@ -7,6 +7,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
+
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import sk.kapitan.NBAstats.data.NBARepository
@@ -17,7 +18,7 @@ class NBAAplication : Application() {
         super.onCreate()
         startKoin() {
             androidContext(this@NBAAplication)
-            module {
+            modules(listOf(module {
                 viewModel() {
                     MainViewModel(get())
                 }
@@ -32,7 +33,12 @@ class NBAAplication : Application() {
                 single {
                     NBARepository(get())
                 }
-            }
+                viewModel() { (teamId: Int) ->
+
+                    GamesViewModel(teamId, get())
+
+                }
+            }))
         }
     }
 }
